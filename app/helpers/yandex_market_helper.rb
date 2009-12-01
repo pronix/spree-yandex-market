@@ -1,0 +1,2 @@
+module YandexMarketHelper
+end
