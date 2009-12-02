@@ -1,0 +1,19 @@
+<% content_for :sidebar do %>
+  <h3 class="name">Настройка Яндекс.Маркет</h3>
+  <br class="clear" />
+
+    <ul class="sidebar">
+      <% content_tag :li, :class => (params[:action] == "category" ? "active": "")  do -%>
+      <%= link_to "Категория выгрузки", category_admin_yandex_markets_path %>
+      <% end -%>
+      
+      <% content_tag :li, :class => (params[:action] == "currency" ? "active": "")  do -%>
+      <%= link_to "Список валют", currency_admin_yandex_markets_path %>
+      <% end -%>
+      
+      <% content_tag :li, :class => (params[:action] == "ware" ? "active": "")  do -%>
+      <%= link_to "Отбор товара", ware_admin_yandex_markets_path %>
+      <% end -%>
+      
+    </ul>
+<% end -%>

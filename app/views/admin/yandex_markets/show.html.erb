@@ -1,0 +1,13 @@
+<%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
+<table>
+  <tr>
+    <th scope="row">Категория выгрузки:</th> 
+    <td><%= @config.preferred_category %></td>
+    <td><%= link_to "edit", category_admin_yandex_markets_path %></td>
+  </tr>
+  <tr>
+    <th scope="row">Валюта:</th> 
+    <td><%= @config.preferred_currency %></td>
+    <td><%= link_to "edit", currency_admin_yandex_markets_path %></td>
+  </tr>
+</table>
