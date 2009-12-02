@@ -1,5 +1,5 @@
 <%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
-<h1>Категория выгрзуки</h1>
+<%= content_tag :h3, t('configure_yandex_market.export_category'), :class => "name" %>
 <% form_tag(admin_yandex_markets_path, :method => :put) do -%>
 
 <%= select_tag 'preferences[preferred_category]', options_for_select(@taxons.collect{ |u| [u.name, u.name] }, @config.preferred_category) -%>

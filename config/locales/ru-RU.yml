@@ -1,2 +1,11 @@
 ru-RU:
   yandex_market: Яндекс.Маркет
+  yandex_market_wares_active: Весь доступный товар
+  yandex_market_wares_on_hand: Только товар который есть в наличии
+  configure_yandex_market:
+    title: Настройка Яндекс.Маркет
+    currency: Валюта
+    export_category: Категория выгрузки
+    list_currency: Список валют
+    export_wares: Отбор товара
+    export_files: Сформированные файлы

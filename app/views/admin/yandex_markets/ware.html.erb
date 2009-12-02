@@ -1,0 +1,27 @@
+<%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
+
+<h1>Отбор товара</h1>
+<% form_tag(admin_yandex_markets_path, :method => :put) do -%>
+<fieldset>
+  <legend><span>Какой товар выгружать в Яндекс.Маркет</span></legend>
+  <ol>
+    <li>
+      <label for="preferences_preferred_wares_active">
+        <%= radio_button_tag 'preferences[preferred_wares]', 'active', @config.preferred_wares == "active" %>
+        Весь активный товар
+      </label>
+    </li>
+    <li>
+      <label for="preferences_preferred_wares_on_hand">
+        <%= radio_button_tag 'preferences[preferred_wares]', 'on_hand', @config.preferred_wares == "on_hand" %>
+        Только товар который есть в наличии
+      </label>
+    </li>
+  </ol>
+</fieldset>
+
+<p class="form-buttons">
+  <%= button t('update') %> 
+  <%= t("or") %> <%= link_to t("cancel"), admin_yandex_markets_url %>
+</p>
+<% end -%>

@@ -1,13 +1,19 @@
 <%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
 <table>
   <tr>
-    <th scope="row">Категория выгрузки:</th> 
+    <th scope="row"><%= t 'configure_yandex_market.export_category' %>:</th> 
     <td><%= @config.preferred_category %></td>
-    <td><%= link_to "edit", category_admin_yandex_markets_path %></td>
+    <td><%= link_to t("edit"), category_admin_yandex_markets_path %></td>
   </tr>
   <tr>
-    <th scope="row">Валюта:</th> 
+    <th scope="row"><%= t 'configure_yandex_market.currency' %>:</th> 
     <td><%= @config.preferred_currency %></td>
-    <td><%= link_to "edit", currency_admin_yandex_markets_path %></td>
+    <td><%= link_to t("edit"), currency_admin_yandex_markets_path %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.export_wares' %>:</th> 
+    <td><%= t("yandex_market_wares_#{@config.preferred_wares}") %></td>
+    <td><%= link_to t("edit"), ware_admin_yandex_markets_path %></td>
   </tr>
 </table>
+
