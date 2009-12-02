@@ -12,6 +12,27 @@ namespace :spree do
           cp file, RAILS_ROOT + path
         end
       end  
+      
+      
+      desc "Generate Yandex.Market export file"
+      task :generate_ym => :environment do 
+        directory = "yandex_market"
+        mkdir_p File.join(RAILS_ROOT,directory) unless File.exist?(File.join(RAILS_ROOT, directory))
+        require File.expand_path(File.join(RAILS_ROOT,"config/environment"))
+        require "#{YandexMarketExtension.root}/lib/export/yandex_market.rb"
+        ::Time::DATE_FORMATS[:ym] = "%Y-%m-%d %H:%M"
+        yml_xml = Export::YandexMarket.new.export
+        
+        # Создаем файл, сохраняем в нужной папке,
+        tfile = File.new( File.join(RAILS_ROOT,directory,"yandex_market_#{Time.now.strftime("%Y_%m_%d__%H_%M")}" ), "w+")
+        tfile.write(yml_xml)
+        tfile.close  
+        # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
+        system %{ gzip #{tfile.path} &&
+                  ln -sf #{tfile.path}.gz #{File.join(RAILS_ROOT, "public", "yandex_market.gz") } }
+        
+      end
+      
     end
   end
 end
