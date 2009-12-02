@@ -1,7 +1,7 @@
 module Export
   class YandexMarket
     include ActionController::UrlWriter
-    attr_accessor :host, :wares_type
+    attr_accessor :host, :wares_type, :currencies
     
     SCHEME = Nokogiri::XML('<!DOCTYPE yml_catalog SYSTEM "shops.dtd" />')
     WARES_TYPE = "wares_type"
@@ -18,27 +18,27 @@ module Export
   
     def export
       @config = ::YandexMarket.first
-      @currencies = [[@config.preferred_currency, 1]]
-      @categories = Taxon.find_by_name(@config.preferred_category)
+      @currencies = @config.preferred_currency.split(';').map{|x| x.split(':')}
+      @currencies.first[1] = 1
       
+      @categories = Taxon.find_by_name(@config.preferred_category)
       @categories = @categories.self_and_descendants
       @categories_ids = @categories.collect { |x| x.id }
-      @products = Product.active.in_taxons @categories
-    
-      # Product.active.on_hand.in_taxons q
-
+            
       Nokogiri::XML::Builder.new({ :encoding =>"windows-1251"}, SCHEME) do |xml|
         xml.yml_catalog(:date => Time.now.to_s(:ym)) {
           
           xml.shop { # описание магазина
             xml.name    Spree::Config[:site_name]
             xml.company Spree::Config[:site_name]
-            xml.url     Spree::Config[:site_url]
+            xml.url     path_to_url(Spree::Config[:site_url])
           }
           
           xml.currencies { # описание используемых валют в магазине
             @currencies && @currencies.each do |curr|
-              xml.currency(:id => curr.first, :rate => curr.last)
+              opt = {:id => curr.first, :rate => curr[1] }
+              opt.merge!({ :plus => curr[2]}) if curr[2] && ["CBRF","NBU","NBK","CB"].include?(curr[1])
+              xml.currency(opt)
             end
           }        
         
@@ -51,7 +51,8 @@ module Export
           }
           xml.offers { # список товаров
             @categories && @categories.each do |cat|
-            cat.products && cat.products.each do |product|
+              products = @config.preferred_wares == "on_hand" ? cat.products.active.on_hand : cat.products.active      
+              products && products.each do |product|
                 offer(xml,product, cat)
               end
             end          
@@ -86,7 +87,7 @@ module Export
     def shared_xml(xml, product, cat)
       xml.url product_url(product, :host => @host)
       xml.price product.price
-      xml.currencyId "RUR"
+      xml.currencyId @currencies.first.first
       xml.categoryId cat.id
       xml.picture path_to_url(product.images.first.attachment.url(:small, false)) unless product.images.empty?
     end
