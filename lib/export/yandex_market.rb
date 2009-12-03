@@ -142,18 +142,18 @@ module Export
         xml.delivery !product.shipping_category.blank?        
         xml.local_delivery_cost @config.preferred_local_delivery_cost
         
-        xml.author ""
+        xml.author product_properties[@config.preferred_author]
         xml.name product.name
-        xml.publisher ""
-        xml.series ""
-        xml.year ""
-        xml.ISBN ""
-        xml.volume ""
-        xml.part ""
-        xml.language ""
+        xml.publisher product_properties[@config.preferred_publisher]
+        xml.series product_properties[@config.preferred_series]
+        xml.year product_properties[@config.preferred_year]
+        xml.ISBN product_properties[@config.preferred_isbn]
+        xml.volume product_properties[@config.preferred_volume]
+        xml.part product_properties[@config.preferred_part]
+        xml.language product_properties[@config.preferred_language]
       
-        xml.binding ""
-        xml.page_extent ""
+        xml.binding product_properties[@config.preferred_binding]
+        xml.page_extent product_properties[@config.preferred_page_extent]
         
         xml.description product.description
         xml.downloadable false
@@ -168,20 +168,20 @@ module Export
       xml.offer(opt) {  
         shared_xml(xml, product, cat)
         
-        xml.author ""
+        xml.author product_properties[@config.preferred_author]
         xml.name product.name
-        xml.publisher ""
-        xml.series ""
-        xml.year ""
-        xml.ISBN ""
-        xml.volume ""
-        xml.part ""
-        xml.language ""
+        xml.publisher product_properties[@config.preferred_publisher]
+        xml.series product_properties[@config.preferred_series]
+        xml.year product_properties[@config.preferred_year]
+        xml.ISBN product_properties[@config.preferred_isbn]
+        xml.volume product_properties[@config.preferred_volume]
+        xml.part product_properties[@config.preferred_part]
+        xml.language product_properties[@config.preferred_language]
       
-        xml.performed_by ""
-        xml.storage ""
-        xml.format ""
-        xml.recording_length ""
+        xml.performed_by product_properties[@config.preferred_performed_by]
+        xml.storage product_properties[@config.preferred_storage]
+        xml.format product_properties[@config.preferred_format]
+        xml.recording_length product_properties[@config.preferred_recording_length]
         xml.description product.description
         xml.downloadable true
       
@@ -198,11 +198,10 @@ module Export
         xml.delivery !product.shipping_category.blank?                
 
       
-        xml.artist ""
-        xml.title ""
-        xml.year ""
-        xml.media ""
-        xml.volume ""
+        xml.artist product_properties[@config.preferred_artist]
+        xml.title  product_properties[@config.preferred_title]
+        xml.year   product_properties[@config.preferred_music_video_year]
+        xml.media  product_properties[@config.preferred_media]
         
         xml.description product.description
         
@@ -218,13 +217,13 @@ module Export
         shared_xml(xml, product, cat)
         
         xml.delivery !product.shipping_category.blank?                
-        xml.title ""
-        xml.year ""
-        xml.media ""
-        xml.starring ""
-        xml.director ""
-        xml.originalName ""
-        xml.country_of_origin
+        xml.title             product_properties[@config.preferred_title]
+        xml.year              product_properties[@config.preferred_music_video_year]
+        xml.media             product_properties[@config.preferred_media]
+        xml.starring          product_properties[@config.preferred_starring]
+        xml.director          product_properties[@config.preferred_director]
+        xml.originalName      product_properties[@config.preferred_orginal_name]
+        xml.country_of_origin product_properties[@config.preferred_video_country]
         xml.description product_url.description
       }
   end
@@ -262,17 +261,14 @@ module Export
       opt = { :id => product.id, :type => "event-ticket", :available => product.has_stock?  }    
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        
         xml.delivery !product.shipping_category.blank?                        
         xml.local_delivery_cost @config.preferred_local_delivery_cost
-        
         xml.name product.name
-        xml.place ""
-        xml.hall(:plan => "url_plan") { xml << "" }
-        xml.hall_part ""
-        xml.date ""
-        xml.is_premiere ""
-        xml.is_kids ""
+        xml.place product_properties[@config.preferred_place]
+        xml.hall(:plan => product_properties[@config.preferred_hall_url_plan]) { xml << product_properties[@config.preferred_hall] }
+        xml.date product_properties[@config.preferred_event_date]
+        xml.is_premiere !product_properties[@config.preferred_is_premiere].blank? 
+        xml.is_kids !product_properties[@config.preferred_is_kids].blank? 
         xml.description product.description
       }
     end
