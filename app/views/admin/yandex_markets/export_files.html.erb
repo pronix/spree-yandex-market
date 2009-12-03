@@ -1,0 +1,29 @@
+<%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
+<div class='toolbar'>
+  <ul class='actions'>
+    <li id="new_ot_link">
+      <%= button_link_to_remote t('configure_yandex_market.run_generate_file'), 
+          { :url => run_export_admin_yandex_markets_path, 
+            :method => :get,
+            :update => "run_generate_export"}, :icon => 'accept' %>
+      
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+<div id="run_generate_export"></div>
+<%= content_tag :h3, t('configure_yandex_market.export_files'), :class => "name" %>
+<table class="index">
+  <tr>
+    <th><%= t('configure_yandex_market.name') %></th>
+    <th><%= t('configure_yandex_market.date') %></th>
+    <th>&nbsp;</th>
+  </tr>
+   <% @export_files && @export_files.each do |ef| -%>
+  <tr>
+    <td><%= ef.first %></td>
+    <td><%= ef.last.to_s(:long) %></td>
+    <td class="actions"><%= link_to t("configure_yandex_market.download"), url_for("/yandex_market/#{ef.first}") %> </td>
+  </tr>
+   <% end -%>
+</table>

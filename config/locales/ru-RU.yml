@@ -9,3 +9,11 @@ ru-RU:
     list_currency: Список валют
     export_wares: Отбор товара
     export_files: Сформированные файлы
+    export_file: Ссылка на файл
+    what_wares_export: Какой товар выгружать в Яндекс.Маркет
+    all_active_wares: Весь активный товар 
+    on_hand_wares: Только товар который есть в наличии
+    run_generate_file: Запусить формирование файла
+    download: Скачать
+    name: Наименование
+    date: Дата\Время

@@ -15,5 +15,12 @@
     <td><%= t("yandex_market_wares_#{@config.preferred_wares}") %></td>
     <td><%= link_to t("edit"), ware_admin_yandex_markets_path %></td>
   </tr>
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
+    <td>
+      <%= link_to url_for("http://#{Spree::Config[:site_url].sub(%r[^http://],'')}/#{'/yandex_market/yandex_market.gz'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.gz") %> 
+    </td>
+    <td>&nbsp;</td>
+  </tr>
 </table>
 
