@@ -4,13 +4,15 @@ class Admin::YandexMarketsController < Admin::BaseController
   def show
     @taxons =  Taxon.roots
   end
-  def category
+  def general
     @taxons =  Taxon.roots
   end
+  
   def currency
   end
   
-  def wares 
+  def ware_property
+    @properties = Property.all
   end
   
   def export_files

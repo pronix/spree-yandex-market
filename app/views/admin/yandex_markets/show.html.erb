@@ -1,26 +1,55 @@
 <%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
 <table>
   <tr>
+    <th scope="row"><%= t 'configure_yandex_market.short_name_small' %>:</th> 
+    <td colspan=2><%= @config.preferred_short_name %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.full_name_small' %>:</th> 
+    <td colspan=2><%= @config.preferred_full_name %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.url' %>:</th> 
+    <td colspan=2><%= @config.preferred_url %></td>
+  </tr>      
+  <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_category' %>:</th> 
-    <td><%= @config.preferred_category %></td>
-    <td><%= link_to t("edit"), category_admin_yandex_markets_path %></td>
+    <td colspan=2><%= @config.preferred_category %></td>
   </tr>
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.currency' %>:</th> 
-    <td><%= @config.preferred_currency %></td>
-    <td><%= link_to t("edit"), currency_admin_yandex_markets_path %></td>
+    <td colspan=2><%= @config.preferred_currency %></td>
   </tr>
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_wares' %>:</th> 
-    <td><%= t("yandex_market_wares_#{@config.preferred_wares}") %></td>
-    <td><%= link_to t("edit"), ware_admin_yandex_markets_path %></td>
+    <td colspan=2><%= t("yandex_market_wares_#{@config.preferred_wares}") %></td>
+  </tr>
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.local_delivery_cost' %>:</th> 
+    <td colspan=2><%=  number_to_currency(@config.preferred_local_delivery_cost) %></td>
   </tr>
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
     <td>
-      <%= link_to url_for("http://#{Spree::Config[:site_url].sub(%r[^http://],'')}/#{'/yandex_market/yandex_market.gz'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.gz") %> 
+      <%= link_to(url_for("http://#{@config.preferred_url.sub(%r[^http://],'')}/#{'/yandex_market/yandex_market.gz'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.gz")) if @config.preferred_url %> 
     </td>
     <td>&nbsp;</td>
+  </tr>
+  
+  <tr>
+    <th scope="row"><%= t 'configure_yandex_market.ware_property' %>:</th> 
+    <td colspan=2>
+      <ul>
+        <% ["type_prefix", "vendor", "model", "vendor_code",
+           "country_of_manufacturer", "manufacturer_warranty", "wares_type" ].each do |property| -%>
+        <li>
+          <%= t("configure_yandex_market.#{property}") %>: <%=  @config.send("preferred_#{property}".to_sym) %>
+        </li>
+        <% end -%>
+          
+      </ul>
+    </td>
+
   </tr>
 </table>
 

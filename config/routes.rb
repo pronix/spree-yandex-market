@@ -1,10 +1,10 @@
 map.namespace :admin do |admin|
   admin.resource :yandex_markets,
   :collection => {
-    :category     => :any,
-    :currency     => :any,
-    :ware         => :any,
-    :export_files => :any,
-    :run_export   => :get
+    :general      => :any,    
+    :currency      => :any,
+    :export_files  => :any,
+    :ware_property => :any,
+    :run_export    => :get
   }
 end

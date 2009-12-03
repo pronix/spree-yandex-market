@@ -4,6 +4,7 @@ ru-RU:
   yandex_market_wares_on_hand: Только товар который есть в наличии
   configure_yandex_market:
     title: Настройка Яндекс.Маркет
+    general: Основные настройки
     currency: Валюта
     export_category: Категория выгрузки
     list_currency: Список валют
@@ -17,3 +18,17 @@ ru-RU:
     download: Скачать
     name: Наименование
     date: Дата\Время
+    ware_property: Выгружаемые свойства товара
+    vendor: Производитель
+    model: Модель
+    vendor_code: Код производителя
+    country_of_manufacturer: Страна-производитель
+    type_prefix: Группа товаров\категория
+    manufacturer_warranty: Есть официальная гарантию производителя
+    local_delivery_cost: Стоимость доставки по своему региону
+    short_name: Короткое название магазина( не более 20 символов)
+    full_name: Полное наименование компании, владеющей магазином.
+    short_name_small: Короткое название магазина
+    full_name_small: Полное наименование компании
+    url: URL-адрес главной страницы магазина
+    wares_type: Тип продукции
