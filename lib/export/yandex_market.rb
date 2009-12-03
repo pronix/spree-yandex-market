@@ -5,7 +5,7 @@ module Export
     
     SCHEME = Nokogiri::XML('<!DOCTYPE yml_catalog SYSTEM "shops.dtd" />')
     WARES_TYPE = "wares_type"
-    DEFAULT_OFFEN = "vendor_model"
+    DEFAULT_OFFEN = "simple"
     def initialize
       @host = Spree::Config[:site_url] 
       ActionController::Base.asset_host = Spree::Config[:site_url] 
@@ -74,8 +74,9 @@ module Export
     end
   
     def offer(xml,product, cat)
-      wares_type_value = product.product_properties.find_by_property_id(@wares_type) &&
-        product.product_properties.find_by_property_id(@wares_type).value
+      wares_type_value =[]
+      # product.product_properties.find_by_property_id(@wares_type) &&
+      #   product.product_properties.find_by_property_id(@wares_type).value
       if ["book", "audiobook", "music", "video", "tour", "event_ticket", "simple", "vendor_model"].include? wares_type_value
         send("offer_#{wares_type_value}".to_sym, xml, product, cat)
       else
@@ -146,7 +147,9 @@ module Export
         
         xml.delivery ""
         xml.local_delivery_cost ""
+        
         xml.name ""
+        
         xml.vendorCode ""
         xml.description product.description
         
