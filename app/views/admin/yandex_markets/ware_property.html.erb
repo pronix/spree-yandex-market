@@ -3,21 +3,84 @@
 <%= content_tag :h3, t('configure_yandex_market.ware_property'), :class => "name" %>
 
 <% form_tag(admin_yandex_markets_path, :method => :put) do -%>
-  <ul>
-    <% ["type_prefix","vendor", "model", "vendor_code",
-       "country_of_manufacturer", "manufacturer_warranty", "wares_type" ].each do |property| -%>
-    <li>
-      <label for="preferences_preferred_<%= property%>">
-        <%= t("configure_yandex_market.#{property}") %>:
-      <%= select_tag("preferences[preferred_#{property}]",
-          options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
-      </label>
-    </li>
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.field_for') %></span></legend>
+  <label><%= radio_button_tag 'wares_type', 'basic', true %> Основные</label>
+  <label><%= radio_button_tag 'wares_type', 'book' %> Книги </label>
+  <label><%= radio_button_tag 'wares_type', 'music_video' %> Музыка/Видео </label>
+  <label><%= radio_button_tag 'wares_type', 'event_ticket' %> Билетов на мероприятия</label>      
+</fieldset>
+
+<fieldset class="fields" id="basic">
+  <legend><span><%= t('configure_yandex_market.basic_property') %></span></legend>
+  <table class="index">
+    <% ["wares_type", "type_prefix","vendor", "model", "vendor_code",
+       "country_of_manufacturer", "manufacturer_warranty" ].each do |property| -%>
+    <tr>
+      <td><%= t("configure_yandex_market.#{property}") %>:</td>
+      <td>
+        <%= select_tag("preferences[preferred_#{property}]",
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+        </td>
+      </tr>
     <% end -%>
-  </ul>
+  </table>
+</fieldset>
+<fieldset class="fields" id="book" style="display:none;">
+  <legend><span><%= t('configure_yandex_market.book_property') %></span></legend>
+  <table class="index">
+    <% %w{author publisher series year isbn volume part language binding page_extent performed_by storage format recording_length}.each do |property| -%>
+    <tr>
+      <td><%= t("configure_yandex_market.#{property}") %>:</td>
+      <td>
+        <%= select_tag("preferences[preferred_#{property}]",
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+</fieldset>
+<fieldset class="fields" id="music_video" style="display:none;">
+<legend><span><%= t('configure_yandex_market.music_video_property') %></span></legend>
+  <table class="index">
+    <% %w{ artist title music_video_year media starring director orginal_name video_country }.each do |property| -%>
+    <tr>
+      <td><%= t("configure_yandex_market.#{property}") %>:</td>
+      <td>
+        <%= select_tag("preferences[preferred_#{property}]",
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+  
+</fieldset>
+<fieldset class="fields" id="event_ticket" style="display:none;">
+<legend><span><%= t('configure_yandex_market.event_ticket_property') %></span></legend>
+  <table class="index">
+    <% %w{ place hall hall_url_plan event_date is_premiere is_kids  }.each do |property| -%>
+    <tr>
+      <td><%= t("configure_yandex_market.#{property}") %>:</td>
+      <td>
+        <%= select_tag("preferences[preferred_#{property}]",
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+
+</fieldset>
 
 <p class="form-buttons">
   <%= button t('update') %> 
   <%= t("or") %> <%= link_to t("cancel"), admin_yandex_markets_url %>
 </p>
 <% end -%>
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+  $("input[type='radio']").change(function(){
+    $("fieldset.fields").hide();
+    $("fieldset#"+$(this).val()).show();
+    });
+  });
+</script>

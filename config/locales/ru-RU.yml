@@ -32,3 +32,36 @@ ru-RU:
     full_name_small: Полное наименование компании
     url: URL-адрес главной страницы магазина
     wares_type: Тип продукции
+    basic_property: Поля для основного описания товара
+    field_for: Поля для типа описания
+    book_property: "Поля для описание типа 'книга', 'аудиокнига' "
+    author: Автор книги
+    publisher: Издательство
+    series: Серия
+    year: Год издания
+    isbn: Код книги
+    volume: Количество томов
+    part: Номер тома
+    language: Язык произведения
+    binding: Переплет
+    page_extent: Количествово страниц в книге
+    performed_by: Исполнитель для аудиокниги
+    storage: Носитель аудиокниги
+    format: Формат аудиокниги.
+    recording_length: Время звучания 
+    artist:  Исполнитель
+    title: Наименование 
+    music_video_year: Год
+    media: Носитель
+    starring: Актеры
+    director: Режиссер
+    orginal_name: Оригинальное наименовани
+    video_country: Страна
+    music_video_property: "Поля для описание типа 'музыка', 'видео' "
+    event_ticket_property: "Поля для описание типа 'билеты на мероприятия' "
+    place: Место мероприятия
+    hall: Зал
+    hall_url_plan: Ссылка на картинку версии зала
+    event_date: Дата и время сеанса.
+    is_premiere: Признак премьерности мероприятия
+    is_kids: Признак детского мероприятия
