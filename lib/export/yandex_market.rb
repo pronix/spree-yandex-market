@@ -1,23 +1,20 @@
 module Export
   class YandexMarket
     include ActionController::UrlWriter
-    attr_accessor :host, :wares_type, :currencies
+    attr_accessor :host, :currencies
     
     SCHEME = Nokogiri::XML('<!DOCTYPE yml_catalog SYSTEM "shops.dtd" />')
-    WARES_TYPE = "wares_type"
-    DEFAULT_OFFEN = "simple"
-    def initialize
-      @host = Spree::Config[:site_url] 
-      ActionController::Base.asset_host = Spree::Config[:site_url] 
-      @wares_type = Property.find_by_name(WARES_TYPE)
-    end
-  
+    DEFAULT_OFFEN = "vendor_model"
+
     def helper
       @helper ||= ApplicationController.helpers
     end
   
     def export
       @config = ::YandexMarket.first
+      @host = @config.preferred_url
+      ActionController::Base.asset_host = @config.preferred_url
+      
       @currencies = @config.preferred_currency.split(';').map{|x| x.split(':')}
       @currencies.first[1] = 1
       
@@ -29,9 +26,9 @@ module Export
         xml.yml_catalog(:date => Time.now.to_s(:ym)) {
           
           xml.shop { # описание магазина
-            xml.name    Spree::Config[:site_name]
-            xml.company Spree::Config[:site_name]
-            xml.url     path_to_url(Spree::Config[:site_url])
+            xml.name    @config.preferred_short_name
+            xml.company @config.preferred_full_name
+            xml.url     @config.preferred_url
           }
           
           xml.currencies { # описание используемых валют в магазине
@@ -61,6 +58,8 @@ module Export
       end.to_xml
     
     end
+    
+    
     private
   # :type => "book"
   # :type => "audiobook"
@@ -74,10 +73,11 @@ module Export
     end
   
     def offer(xml,product, cat)
-      wares_type_value =[]
-      # product.product_properties.find_by_property_id(@wares_type) &&
-      #   product.product_properties.find_by_property_id(@wares_type).value
-      if ["book", "audiobook", "music", "video", "tour", "event_ticket", "simple", "vendor_model"].include? wares_type_value
+      
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
+      wares_type_value = product_properties[@config.preferred_wares_type]
+      if ["book", "audiobook", "music", "video", "tour", "event_ticket"].include? wares_type_value
         send("offer_#{wares_type_value}".to_sym, xml, product, cat)
       else
         send("offer_#{DEFAULT_OFFEN}".to_sym, xml, product, cat)      
@@ -94,80 +94,56 @@ module Export
     end
 
     
-  # # Описание элементов, входящих в элемент <offer>
-    # # элементы   Описание
-    
-    # # typePrefix  Группа товаров \ категория
-    # # vendor  Производитель
-# # model  Модель
-    # # name Наименование товарного предложения
-    
-    # # delivery  Элемент, обозначающий возможность доставить соответствующий товар. "false" данный товар не может быть доставлен("самовывоз"). "true" товар доставляется на условиях, которые указываются в партнерском интерфейсе http://partner.market.yandex.ru на странице "редактирование".
-    
-    # # description  Описание товарного предложения
-    
-# # vendorCode  Код товара (указывается код производителя)
-    # # local_delivery_cost  Стоимость доставки данного товара в Своем регионе
-    # # available  Статус доступности товара - в наличии/на заказ
-    # # available="false" - товарное предложение на заказ. Магазин готов осуществить поставку товара на указанных условиях в течение месяца (срок может быть больше для товаров, которые всеми участниками рынка поставляются только на заказ).. Те товарные предложения, на которые заказы не принимаются, не должны выгружаться в Яндекс.Маркет.
-    # # available="true" - товарное предложение в наличии. Магазин готов сразу договариваться с покупателем о доставке товара
-    # # sales_notes  Элемент, предназначенный для того, чтобы показать пользователям, чем отличается данный товар от других, или для описания акций магазина (кроме скидок). Допустимая длина текста в элементе - 50 символов.
-    # # manufacturer_warranty  Элемент предназначен для отметки товаров, имеющих официальную гарантию производителя.
-    # # country_of_origin  Элемент предназначен для указания страны производства товара.
-    
-    # # downloadable  Элемент предназначен обозначения товара, который можно скачать.
-    
   # Обычное описание
     def offer_vendor_model(xml,product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       opt = { :id => product.id, :type => "vendor.model", :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        
-        xml.delivery ""
-        xml.local_delivery_cost ""
-        
-        xml.typePrefix ""
-        xml.vendor ""
-        xml.vendorCode ""
-        xml.model ""
-        
-        xml.description product.description
-        xml.manufacturer_warranty ""
-      
-        xml.country_of_origin ""
+        xml.delivery               !product.shipping_category.blank?
+        xml.local_delivery_cost    @config.preferred_local_delivery_cost if @config.preferred_local_delivery_cost
+        xml.typePrefix product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
+        xml.vendor product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]    
+        xml.vendorCode product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
+        xml.model                  product_properties[@config.preferred_model] if product_properties[@config.preferred_model]
+        xml.description            product.description if product.description
+        xml.manufacturer_warranty  !product_properties[@config.preferred_manufacturer_warranty].blank? 
+        xml.country_of_origin      product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false
       }
     end
 
     # простое описание
     def offer_simple(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       opt = { :id => product.id,  :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        
-        xml.delivery ""
-        xml.local_delivery_cost ""
-        
-        xml.name ""
-        
-        xml.vendorCode ""
-        xml.description product.description
-        
-        xml.country_of_origin ""
-        xml.downloadable false
+        xml.delivery            !product.shipping_category.blank?        
+        xml.local_delivery_cost @config.preferred_local_delivery_cost 
+        xml.name                product.name
+        xml.vendorCode          product_properties[@config.preferred_vendor_code]
+        xml.description         product.description
+        xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer]
+        xml.downloadable false   
       }
   end
     
     # Книги
     def offer_book(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       opt = { :id => product.id, :type => "book", :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery ""
+        xml.delivery !product.shipping_category.blank?        
+        xml.local_delivery_cost @config.preferred_local_delivery_cost
         
         xml.author ""
-        xml.name ""
+        xml.name product.name
         xml.publisher ""
         xml.series ""
         xml.year ""
@@ -186,12 +162,14 @@ module Export
     
     # Аудиокниги
     def offer_audiobook(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }      
       opt = { :id => product.id, :type => "audiobook", :available => product.has_stock?  }
       xml.offer(opt) {  
         shared_xml(xml, product, cat)
         
         xml.author ""
-        xml.name ""
+        xml.name product.name
         xml.publisher ""
         xml.series ""
         xml.year ""
@@ -212,11 +190,13 @@ module Export
     
   # Описание музыкальной продукции
     def offer_music(xml, product, cat)
-    opt = { :id => product.id, :type => "artist.title", :available => product.has_stock?  }
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
+      opt = { :id => product.id, :type => "artist.title", :available => product.has_stock?  }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        
-        xml.delivery ""
+        xml.delivery !product.shipping_category.blank?                
+
       
         xml.artist ""
         xml.title ""
@@ -231,12 +211,13 @@ module Export
     
     # Описание видео продукции:
     def offer_video(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       opt = { :id => product.id, :type => "artist.title", :available => product.has_stock?  }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery ""
-      
+        xml.delivery !product.shipping_category.blank?                
         xml.title ""
         xml.year ""
         xml.media ""
@@ -250,13 +231,14 @@ module Export
     
   # Описание тура
     def offer_tour(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       opt = { :id => product.id, :type => "tour", :available => product.has_stock?  }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery ""
-        
-        xml.local_delivery_cost ""
+        xml.delivery !product.shipping_category.blank?                
+        xml.local_delivery_cost @config.preferred_local_delivery_cost
         xml.worldRegion ""
         xml.country ""
         xml.region ""
@@ -275,14 +257,16 @@ module Export
     
     # Описание билетов на мероприятия
     def offer_event_ticket(xml, product, cat)
+      product_properties = { }
+      product.product_properties.map {|x| product_properties[x.property_name] = x.value }      
       opt = { :id => product.id, :type => "event-ticket", :available => product.has_stock?  }    
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery ""
-        xml.local_delivery_cost ""
+        xml.delivery !product.shipping_category.blank?                        
+        xml.local_delivery_cost @config.preferred_local_delivery_cost
         
-        xml.name ""
+        xml.name product.name
         xml.place ""
         xml.hall(:plan => "url_plan") { xml << "" }
         xml.hall_part ""
