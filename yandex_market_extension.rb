@@ -9,7 +9,7 @@ class YandexMarketExtension < Spree::Extension
   # Please use yandex_market/config/routes.rb instead for extension routes.
 
   def self.require_gems(config)
-    config.gem "nokogiri"
+    config.gem "nokogiri", :version => '>=1.4.0'
   end
   
   def activate
