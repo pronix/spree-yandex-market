@@ -31,7 +31,7 @@
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
     <td>
-      <%= link_to(url_for("http://#{@config.preferred_url.sub(%r[^http://],'')}/#{'/yandex_market/yandex_market.gz'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.gz")) if @config.preferred_url %> 
+      <%= link_to(url_for("http://#{@config.preferred_url.sub(%r[^http://],'').sub(%r[/$],'')}/#{'/yandex_market/yandex_market.gz'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.gz")) if @config.preferred_url %> 
     </td>
     <td>&nbsp;</td>
   </tr>
