@@ -28,7 +28,7 @@ module Export
           xml.shop { # описание магазина
             xml.name    @config.preferred_short_name
             xml.company @config.preferred_full_name
-            xml.url     @config.preferred_url
+            xml.url     path_to_url('')
           }
           
           xml.currencies { # описание используемых валют в магазине
@@ -104,6 +104,7 @@ module Export
         xml.delivery               !product.shipping_category.blank?
         xml.local_delivery_cost    @config.preferred_local_delivery_cost if @config.preferred_local_delivery_cost
         xml.typePrefix product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
+        xml.name                product.name
         xml.vendor product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]    
         xml.vendorCode product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
         xml.model                  product_properties[@config.preferred_model] if product_properties[@config.preferred_model]

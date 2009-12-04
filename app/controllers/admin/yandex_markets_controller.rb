@@ -21,7 +21,7 @@ class Admin::YandexMarketsController < Admin::BaseController
       sort{|x,y| y.last <=> x.last }
     e =@export_files.find {|x| x.first == "yandex_market.gz" }
     @export_files.reject! {|x| x.first == "yandex_market.gz" }
-    @export_files.unshift(e)
+    @export_files.unshift(e) unless e.blank?
 
 
   end
@@ -47,6 +47,6 @@ class Admin::YandexMarketsController < Admin::BaseController
   
   private
   def get_config
-    @config = YandexMarket.first
+    @config = YandexMarket.find_or_create_by_name("Default configuration")    
   end
 end
