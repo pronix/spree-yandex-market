@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Uncomment this if you reference any of your controllers in activate
 # require_dependency 'application'
 
@@ -11,7 +12,7 @@ class YandexMarketExtension < Spree::Extension
   def self.require_gems(config)
     config.gem "nokogiri", :version => '>=1.4.0'
   end
-  
+
   def activate
 
     # Add your extension tab to the admin.
