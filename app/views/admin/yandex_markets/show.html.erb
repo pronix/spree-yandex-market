@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.local_delivery_cost' %>:</th> 
-    <td colspan=2><%=  number_to_currency(@config.preferred_local_delivery_cost) %></td>
+    <td colspan=2><%=  number_to_currency(@config.preferred_local_delivery_cost.to_i) %></td>
   </tr>
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
