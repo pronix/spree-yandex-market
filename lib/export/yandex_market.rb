@@ -5,7 +5,7 @@ module Export
     attr_accessor :host, :currencies
     
     SCHEME = Nokogiri::XML('<!DOCTYPE yml_catalog SYSTEM "shops.dtd" />')
-    DEFAULT_OFFEN = "vendor_model"
+    DEFAULT_OFFEN = "book"
 
     def helper
       @helper ||= ApplicationController.helpers
