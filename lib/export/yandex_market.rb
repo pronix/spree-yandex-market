@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module Export
   class YandexMarket
     include ActionController::UrlWriter
@@ -9,7 +10,7 @@ module Export
     def helper
       @helper ||= ApplicationController.helpers
     end
-  
+    
     def export
       @config = ::YandexMarket.first
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
@@ -21,7 +22,7 @@ module Export
       @categories = Taxon.find_by_name(@config.preferred_category)
       @categories = @categories.self_and_descendants
       @categories_ids = @categories.collect { |x| x.id }
-            
+      
       Nokogiri::XML::Builder.new({ :encoding =>"windows-1251"}, SCHEME) do |xml|
         xml.yml_catalog(:date => Time.now.to_s(:ym)) {
           
@@ -29,49 +30,49 @@ module Export
             xml.name    @config.preferred_short_name
             xml.company @config.preferred_full_name
             xml.url     path_to_url('')
-          }
-          
-          xml.currencies { # описание используемых валют в магазине
-            @currencies && @currencies.each do |curr|
-              opt = {:id => curr.first, :rate => curr[1] }
-              opt.merge!({ :plus => curr[2]}) if curr[2] && ["CBRF","NBU","NBK","CB"].include?(curr[1])
-              xml.currency(opt)
-            end
-          }        
-        
-          xml.categories { # категории товара
-            @categories_ids && @categories.each do |cat|
-              @cat_opt = { :id => cat.id }
-              @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
-              xml.category(@cat_opt){ xml  << cat.name }
-            end
-          }
-          xml.offers { # список товаров
-            @categories && @categories.each do |cat|
-              products = @config.preferred_wares == "on_hand" ? cat.products.active.on_hand : cat.products.active      
-              products && products.each do |product|
-                offer(xml,product, cat)
+            
+            xml.currencies { # описание используемых валют в магазине
+              @currencies && @currencies.each do |curr|
+                opt = {:id => curr.first, :rate => curr[1] }
+                opt.merge!({ :plus => curr[2]}) if curr[2] && ["CBRF","NBU","NBK","CB"].include?(curr[1])
+                xml.currency(opt)
               end
-            end          
+            }        
+            
+            xml.categories { # категории товара
+              @categories_ids && @categories.each do |cat|
+                @cat_opt = { :id => cat.id }
+                @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
+                xml.category(@cat_opt){ xml  << cat.name }
+              end
+            }
+            xml.offers { # список товаров
+              @categories && @categories.each do |cat|
+                products = @config.preferred_wares == "on_hand" ? cat.products.active.on_hand : cat.products.active      
+                products && products.each do |product|
+                  offer(xml,product, cat)
+                end
+              end          
+            }
           }
         } 
       end.to_xml
-    
+      
     end
     
     
     private
-  # :type => "book"
-  # :type => "audiobook"
-  # :type => misic
-  # :type => video
-  # :type => tour
-  # :type => event_ticket
+    # :type => "book"
+    # :type => "audiobook"
+    # :type => misic
+    # :type => video
+    # :type => tour
+    # :type => event_ticket
     
     def path_to_url(path)
       "http://#{@host.sub(%r[^http://],'')}/#{path.sub(%r[^/],'')}"
     end
-  
+    
     def offer(xml,product, cat)
       
       product_properties = { }
@@ -94,7 +95,7 @@ module Export
     end
 
     
-  # Обычное описание
+    # Обычное описание
     def offer_vendor_model(xml,product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
@@ -130,7 +131,7 @@ module Export
         xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false   
       }
-  end
+    end
     
     # Книги
     def offer_book(xml, product, cat)
@@ -152,14 +153,14 @@ module Export
         xml.volume product_properties[@config.preferred_volume]
         xml.part product_properties[@config.preferred_part]
         xml.language product_properties[@config.preferred_language]
-      
+        
         xml.binding product_properties[@config.preferred_binding]
         xml.page_extent product_properties[@config.preferred_page_extent]
         
         xml.description product.description
         xml.downloadable false
       }
-  end
+    end
     
     # Аудиокниги
     def offer_audiobook(xml, product, cat)
@@ -178,18 +179,18 @@ module Export
         xml.volume product_properties[@config.preferred_volume]
         xml.part product_properties[@config.preferred_part]
         xml.language product_properties[@config.preferred_language]
-      
+        
         xml.performed_by product_properties[@config.preferred_performed_by]
         xml.storage product_properties[@config.preferred_storage]
         xml.format product_properties[@config.preferred_format]
         xml.recording_length product_properties[@config.preferred_recording_length]
         xml.description product.description
         xml.downloadable true
-      
+        
       }
     end
     
-  # Описание музыкальной продукции
+    # Описание музыкальной продукции
     def offer_music(xml, product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
@@ -198,7 +199,7 @@ module Export
         shared_xml(xml, product, cat)
         xml.delivery !product.shipping_category.blank?                
 
-      
+        
         xml.artist product_properties[@config.preferred_artist]
         xml.title  product_properties[@config.preferred_title]
         xml.year   product_properties[@config.preferred_music_video_year]
@@ -206,7 +207,7 @@ module Export
         
         xml.description product.description
         
-    }
+      }
     end
     
     # Описание видео продукции:
@@ -227,9 +228,9 @@ module Export
         xml.country_of_origin product_properties[@config.preferred_video_country]
         xml.description product_url.description
       }
-  end
+    end
     
-  # Описание тура
+    # Описание тура
     def offer_tour(xml, product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
