@@ -23,7 +23,7 @@ module Export
       @categories = @categories.self_and_descendants
       @categories_ids = @categories.collect { |x| x.id }
       
-      Nokogiri::XML::Builder.new({ :encoding =>"windows-1251"}, SCHEME) do |xml|
+      Nokogiri::XML::Builder.new({ :encoding =>"utf-8"}, SCHEME) do |xml|
         xml.yml_catalog(:date => Time.now.to_s(:ym)) {
           
           xml.shop { # описание магазина
