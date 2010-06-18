@@ -50,7 +50,7 @@ module Export
               @categories && @categories.each do |cat|
                 products = @config.preferred_wares == "on_hand" ? cat.products.active.on_hand : cat.products.active      
                 products && products.each do |product|
-                  offer(xml,product, cat)
+                  offer(xml,product, cat) if product.price > 0
                 end
               end          
             }
