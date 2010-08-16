@@ -102,7 +102,10 @@ module Export
       opt = { :id => product.id, :type => "vendor.model", :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery               !product.shipping_category.blank?
+        # xml.delivery               !product.shipping_category.blank?
+        # На самом деле наличие shipping_category не обязательно должно быть чтобы была возможна доставка
+        # смотри http://spreecommerce.com/documentation/shipping.html#shipping-category
+        xml.delivery               true
         xml.local_delivery_cost    @config.preferred_local_delivery_cost if @config.preferred_local_delivery_cost
         xml.typePrefix product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
         xml.name                product.name
