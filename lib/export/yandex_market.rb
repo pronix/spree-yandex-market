@@ -126,7 +126,7 @@ module Export
       opt = { :id => product.id,  :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery            !product.shipping_category.blank?        
+        xml.delivery               true
         xml.local_delivery_cost @config.preferred_local_delivery_cost 
         xml.name                product.name
         xml.vendorCode          product_properties[@config.preferred_vendor_code]
@@ -144,7 +144,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery !product.shipping_category.blank?        
+        xml.delivery true
         xml.local_delivery_cost @config.preferred_local_delivery_cost
         
         xml.author product_properties[@config.preferred_author]
@@ -200,7 +200,7 @@ module Export
       opt = { :id => product.id, :type => "artist.title", :available => product.has_stock?  }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery !product.shipping_category.blank?                
+        xml.delivery true        
 
         
         xml.artist product_properties[@config.preferred_artist]
@@ -221,7 +221,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery !product.shipping_category.blank?                
+        xml.delivery true        
         xml.title             product_properties[@config.preferred_title]
         xml.year              product_properties[@config.preferred_music_video_year]
         xml.media             product_properties[@config.preferred_media]
@@ -241,7 +241,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery !product.shipping_category.blank?                
+        xml.delivery true        
         xml.local_delivery_cost @config.preferred_local_delivery_cost
         xml.worldRegion ""
         xml.country ""
@@ -266,7 +266,7 @@ module Export
       opt = { :id => product.id, :type => "event-ticket", :available => product.has_stock?  }    
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery !product.shipping_category.blank?                        
+        xml.delivery true                
         xml.local_delivery_cost @config.preferred_local_delivery_cost
         xml.name product.name
         xml.place product_properties[@config.preferred_place]
