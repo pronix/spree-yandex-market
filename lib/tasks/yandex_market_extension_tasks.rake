@@ -31,7 +31,7 @@ namespace :spree do
         tfile.close  
         # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
         system %{ gzip #{tfile.path} && cd #{directory} && 
-                  ln -sf #{tfile_basename}.gz #{File.join(directory, "yandex_market.gz") } }
+                  ln -sf #{tfile_basename}.gz yandex_market.gz }
 
         # Удаляем лишнии файлы
         @config = ::YandexMarket.first
