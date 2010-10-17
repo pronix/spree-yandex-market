@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 namespace :spree do
   namespace :extensions do
     namespace :yandex_market do
@@ -24,12 +25,13 @@ namespace :spree do
         yml_xml = Export::YandexMarket.new.export
         
         # Создаем файл, сохраняем в нужной папке,
-        tfile = File.new( File.join(directory,"yandex_market_#{Time.now.strftime("%Y_%m_%d__%H_%M")}" ), "w+")
+        tfile_basename = "yandex_market_#{Time.now.strftime("%Y_%m_%d__%H_%M")}"
+        tfile = File.new( File.join(directory,tfile_basename), "w+")
         tfile.write(yml_xml)
         tfile.close  
         # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
-        system %{ gzip #{tfile.path} &&
-                  ln -sf #{tfile.path}.gz #{File.join(directory, "yandex_market.gz") } }
+        system %{ gzip #{tfile.path} && cd #{directory} && 
+                  ln -sf #{tfile_basename}.gz #{File.join(directory, "yandex_market.gz") } }
 
         # Удаляем лишнии файлы
         @config = ::YandexMarket.first
