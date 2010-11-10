@@ -17,43 +17,53 @@ namespace :spree do
       
       desc "Generate Yandex.Market export file"
       task :generate_ym => :environment do 
-        directory = File.join(RAILS_ROOT,'public', "yandex_market")
+        generate_export_file 'yandex_market'
+      end
+
+      desc "Generate Torg.mail.ru export file"
+      task :generate_torg_mail_ru => :environment do 
+        generate_export_file 'torg_mail_ru'
+      end
+
+      def generate_export_file torgovaya_sistema='yandex_market'
+        directory = File.join(RAILS_ROOT,'public', "#{torgovaya_sistema}")
         mkdir_p directory unless File.exist?(directory)
         require File.expand_path(File.join(RAILS_ROOT,"config/environment"))
-        require "#{YandexMarketExtension.root}/lib/export/yandex_market.rb"
+        require "#{YandexMarketExtension.root}/lib/export/#{torgovaya_sistema}_exporter.rb"
         ::Time::DATE_FORMATS[:ym] = "%Y-%m-%d %H:%M"
-        yml_xml = Export::YandexMarket.new.export
-        
+        yml_xml = Export.const_get("#{torgovaya_sistema.camelize}Exporter").new.export
+        puts 'saving file...'
+
         # Создаем файл, сохраняем в нужной папке,
-        tfile_basename = "yandex_market_#{Time.now.strftime("%Y_%m_%d__%H_%M")}"
+        tfile_basename = "#{torgovaya_sistema}_#{Time.now.strftime("%Y_%m_%d__%H_%M")}"
         tfile = File.new( File.join(directory,tfile_basename), "w+")
         tfile.write(yml_xml)
         tfile.close  
-        # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
+        # пакуем в gz и делаем симлинк на ссылку файла #{torgovaya_sistema}_last.gz
         system %{ gzip #{tfile.path} && cd #{directory} && 
-                  ln -sf #{tfile_basename}.gz yandex_market.gz }
+                  ln -sf #{tfile_basename}.gz "#{torgovaya_sistema}.gz" }
 
+        puts 'deleting file...'
         # Удаляем лишнии файлы
-        @config = ::YandexMarket.first
+        @config = eval("::#{torgovaya_sistema.camelize}").first
         @number_of_files = @config.preferred_number_of_files
-         
+        
         @export_files =  Dir[File.join(directory, '**','*')].
           map {|x| [File.basename(x), File.mtime(x)] }.
           sort{|x,y| y.last <=> x.last }
-        e =@export_files.find {|x| x.first == "yandex_market.gz" }
-        @export_files.reject! {|x| x.first == "yandex_market.gz" }
+        e =@export_files.find {|x| x.first == "#{torgovaya_sistema}.gz" }
+        @export_files.reject! {|x| x.first == "#{torgovaya_sistema}.gz" }
         @export_files.unshift(e)
         
         @export_files[@number_of_files..-1] && @export_files[@number_of_files..-1].each do |x|
           if File.exist?(File.join(directory,x.first))
-            Rails.logger.info '[ yandex market ] удаляем устаревший файл'
-            Rails.logger.info "[ yandex market ] путь к файлу #{File.join(directory,x.first)}"
+            Rails.logger.info "[ #{torgovaya_sistema} ] удаляем устаревший файл"
+            Rails.logger.info "[ #{torgovaya_sistema} ] путь к файлу #{File.join(directory,x.first)}"
             File.delete(File.join(directory,x.first)) 
           end
         end
-        
-      end
-      
+      end      
     end
   end
 end
+

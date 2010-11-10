@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 module Export
-  class YandexMarket
+  class YandexMarketExporter
     include ActionController::UrlWriter
     attr_accessor :host, :currencies
     
