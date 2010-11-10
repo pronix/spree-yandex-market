@@ -46,6 +46,7 @@ namespace :spree do
         puts 'deleting file...'
         # Удаляем лишнии файлы
         @config = eval("::#{torgovaya_sistema.camelize}").first
+        @config = ::YandexMarket.first
         @number_of_files = @config.preferred_number_of_files
         
         @export_files =  Dir[File.join(directory, '**','*')].
