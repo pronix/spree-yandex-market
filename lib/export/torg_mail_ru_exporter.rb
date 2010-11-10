@@ -12,7 +12,8 @@ module Export
     end
     
     def export
-      @config = ::TorgMailRu.find_or_create_by_name('Default configuration')
+      # @config = ::TorgMailRu.find_or_create_by_name('Default configuration')
+      @config = ::YandexMarket.first
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       
