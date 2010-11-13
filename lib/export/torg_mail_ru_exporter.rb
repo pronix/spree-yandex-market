@@ -98,7 +98,7 @@ module Export
       opt = { :id => product.id,  :available => product.has_stock? }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery_type       true
+        xml.delivery_type       '1'
         xml.delivery_cost       @config.preferred_local_delivery_cost 
         xml.name                product.name
         xml.vendor product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]    
