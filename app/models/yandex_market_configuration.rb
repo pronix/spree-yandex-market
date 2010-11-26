@@ -1,5 +1,4 @@
-# class YandexMarket < ActiveRecord::Base
-class YandexMarket < Configuration
+class YandexMarketConfiguration < Configuration
   preference :category,        :string
   preference :currency,        :string
   preference :wares,           :string,  :default => "active"

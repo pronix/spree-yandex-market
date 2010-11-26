@@ -1,6 +1,8 @@
+require 'nokogiri'
+
 # -*- coding: utf-8 -*-
 module Export
-  class YandexMarketExporter
+  class YandexMarket
     include ActionController::UrlWriter
     attr_accessor :host, :currencies
     
@@ -12,7 +14,7 @@ module Export
     end
     
     def export
-      @config = ::YandexMarket.first
+      @config = ::YandexMarketConfiguration.first
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       

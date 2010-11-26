@@ -1,10 +1,13 @@
-map.namespace :admin do |admin|
-  admin.resource :yandex_markets,
-  :collection => {
-    :general      => :any,    
-    :currency      => :any,
-    :export_files  => :any,
-    :ware_property => :any,
-    :run_export    => :get
-  }
+Rails.application.routes.draw do
+  namespace :admin do
+    resource :yandex_markets do
+      member do
+        match :general
+        match :currency
+        match :export_files
+        match :ware_property
+        get :run_export
+      end
+    end
+  end
 end
