@@ -93,7 +93,7 @@ module Export
       xml.price product.price
       xml.currencyId @currencies.first.first
       xml.categoryId cat.id
-      xml.picture path_to_url(product.images.first.attachment.url(:small, false)) unless product.images.empty?
+      xml.picture path_to_url(product.images.first.attachment.url(:product, false)) unless product.images.empty?
     end
 
     
