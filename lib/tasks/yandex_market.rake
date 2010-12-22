@@ -28,8 +28,7 @@ namespace :spree do
         tfile.write(yml_xml)
         tfile.close  
         # пакуем в gz и делаем симлинк на ссылку файла yandex_market_last.gz
-        system %{ gzip #{tfile.path} &&
-                  ln -sf #{tfile.path}.gz #{File.join(directory, "yandex_market.gz") } }
+        `ln -sf "#{tfile.path}" "#{File.join(directory, 'yandex_market.xml')}"`
 
         # Удаляем лишнии файлы
         @config = ::YandexMarketConfiguration.first
@@ -38,8 +37,8 @@ namespace :spree do
         @export_files =  Dir[File.join(directory, '**','*')].
           map {|x| [File.basename(x), File.mtime(x)] }.
           sort{|x,y| y.last <=> x.last }
-        e =@export_files.find {|x| x.first == "yandex_market.gz" }
-        @export_files.reject! {|x| x.first == "yandex_market.gz" }
+        e =@export_files.find {|x| x.first == "yandex_market.xml" }
+        @export_files.reject! {|x| x.first == "yandex_market.xml" }
         @export_files.unshift(e)
         
         @export_files[@number_of_files..-1] && @export_files[@number_of_files..-1].each do |x|
