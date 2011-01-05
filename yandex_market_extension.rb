@@ -15,6 +15,10 @@ class YandexMarketExtension < Spree::Extension
 
   def activate
 
+    AppConfiguration.class_eval do
+      preference :yandex_market_use_utm_labels, :boolean, :default => false
+    end
+
     # Add your extension tab to the admin.
     # Requires that you have defined an admin controller:
     # app/controllers/admin/yourextension_controller
