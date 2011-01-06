@@ -83,7 +83,7 @@ module Export
     
     # общая часть для всех видов продукции
     def shared_xml(xml, product, cat)
-      xml.url product_url(product, :host => @host)
+      xml.url Spree::Config[:yandex_market_use_utm_labels] ? product_url(product, :host => @host, :utm_source => 'torg.mail.ru', :utm_medium => 'cpc', :utm_campaign => 'torg.mail.ru') : product_url(product, :host => @host)
       xml.price product.price
       xml.currencyId @currencies.first.first
       xml.categoryId cat.id
