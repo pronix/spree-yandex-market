@@ -34,6 +34,7 @@
 Установка
 ---------
         script/extension install git://github.com/pronix/spree-yandex-market.git
+        rake db:migrate
         Для периодического формирования файла экспорта запишите в крон следущую команду:
         cd #{ RAILS_ROOT } && RAILS_ENV=#{RAILS_ENV} rake spree:extensions:yandex_market:generate_ym
 
