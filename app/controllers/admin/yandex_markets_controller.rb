@@ -17,13 +17,12 @@ class Admin::YandexMarketsController < Admin::BaseController
   
   def export_files
     directory = File.join(RAILS_ROOT,'public', "yandex_market", '**', '*')
-    @export_files =  Dir[directory].map {|x| [File.basename(x), File.mtime(x)] }.
+    # нельзя вызывать стат, не удостоверившись в наличии файла!!111
+    @export_files =  Dir[directory].map {|x| [File.basename(x), (File.file?(x) ? File.mtime(x).to_i : 0)] }.
       sort{|x,y| y.last <=> x.last }
-    e =@export_files.find {|x| x.first == "yandex_market.gz" }
-    @export_files.reject! {|x| x.first == "yandex_market.gz" }
+    e =@export_files.find {|x| x.first == "yandex_market.xml" }
+    @export_files.reject! {|x| x.first == "yandex_market.xml" }
     @export_files.unshift(e) unless e.blank?
-
-
   end
   
   def run_export
@@ -31,7 +30,9 @@ class Admin::YandexMarketsController < Admin::BaseController
     logger.info "[ yandex market ] Запуск формирование файла экспорта из блока администрирования "
     logger.info "[ yandex market ] команда - #{command} "
     system command
-    render :text => "Обновите страницу через несколько минут.", :status => :ok, :layout => false
+    # Временно убрано для перехода на Rails 3
+    # render :text => "Обновите страницу через несколько минут.", :status => :ok, :layout => false
+    redirect_to export_files_admin_yandex_markets_url
   end
   
   def update
@@ -44,9 +45,10 @@ class Admin::YandexMarketsController < Admin::BaseController
       }
     end
   end
-  
+
   private
+
   def get_config
-    @config = YandexMarket.find_or_create_by_name("Default configuration")    
+    @config = YandexMarketConfiguration.find_or_create_by_name("Default configuration")    
   end
 end

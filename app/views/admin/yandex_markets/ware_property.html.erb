@@ -20,7 +20,7 @@
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
         <%= select_tag("preferences[preferred_#{property}]",
-            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
     <% end -%>
@@ -34,7 +34,7 @@
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
         <%= select_tag("preferences[preferred_#{property}]",
-            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
     <% end -%>
@@ -48,7 +48,7 @@
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
         <%= select_tag("preferences[preferred_#{property}]",
-            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
     <% end -%>
@@ -63,7 +63,7 @@
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
         <%= select_tag("preferences[preferred_#{property}]",
-            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym), :include_blank => true)) -%>
+            options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
     <% end -%>
