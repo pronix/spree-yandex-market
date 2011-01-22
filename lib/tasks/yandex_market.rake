@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 namespace :spree do
   namespace :extensions do
     namespace :yandex_market do
@@ -19,9 +20,9 @@ namespace :spree do
         directory = File.join(RAILS_ROOT,'public', "yandex_market")
         mkdir_p directory unless File.exist?(directory)
         require File.expand_path(File.join(RAILS_ROOT,"config/environment"))
-        require "#{File.expand_path('../..', File.dirname(__FILE__))}/lib/export/yandex_market.rb"
+        require "#{File.expand_path('../..', File.dirname(__FILE__))}/lib/export/yandex_market_exporter.rb"
         ::Time::DATE_FORMATS[:ym] = "%Y-%m-%d %H:%M"
-        yml_xml = Export::YandexMarket.new.export
+        yml_xml = Export::YandexMarketExporter.new.export
         
         # Создаем файл, сохраняем в нужной папке,
         tfile = File.new( File.join(directory,"yandex_market_#{Time.now.strftime("%Y_%m_%d_%H_%M")}" ), "w+")
@@ -31,7 +32,7 @@ namespace :spree do
         `ln -sf "#{tfile.path}" "#{File.join(directory, 'yandex_market.xml')}"`
 
         # Удаляем лишнии файлы
-        @config = ::YandexMarketConfiguration.first
+        @config = YandexMarket::Config.instance
         @number_of_files = @config.preferred_number_of_files
          
         @export_files =  Dir[File.join(directory, '**','*')].

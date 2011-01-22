@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Admin::YandexMarketsController < Admin::BaseController  
   before_filter :get_config
   
@@ -49,6 +50,6 @@ class Admin::YandexMarketsController < Admin::BaseController
   private
 
   def get_config
-    @config = YandexMarketConfiguration.find_or_create_by_name("Default configuration")    
+    @config = YandexMarket::Config.instance
   end
 end

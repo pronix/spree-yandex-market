@@ -1,20 +1,19 @@
+# -*- coding: utf-8 -*-
 require 'nokogiri'
 
-# -*- coding: utf-8 -*-
 module Export
-  class YandexMarket
+  class YandexMarketExporter
     include ActionController::UrlWriter
     attr_accessor :host, :currencies
     
-    SCHEME = Nokogiri::XML('<!DOCTYPE yml_catalog SYSTEM "shops.dtd" />')
-    DEFAULT_OFFEN = "book"
+    DEFAULT_OFFER = "book"
 
     def helper
       @helper ||= ApplicationController.helpers
     end
     
     def export
-      @config = ::YandexMarketConfiguration.first
+      @config = YandexMarket::Config.instance
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       
@@ -25,7 +24,13 @@ module Export
       @categories = @categories.self_and_descendants
       @categories_ids = @categories.collect { |x| x.id }
       
-      Nokogiri::XML::Builder.new({ :encoding =>"utf-8"}, SCHEME) do |xml|
+      # Nokogiri::XML::Builder.new({ :encoding =>"utf-8"}, SCHEME) do |xml|
+      Nokogiri::XML::Builder.new(:encoding =>"utf-8") do |xml|
+        xml.doc.create_internal_subset('yml_catalog',
+                                       nil,
+                                       "shops.dtd"
+                                       )
+
         xml.yml_catalog(:date => Time.now.to_s(:ym)) {
           
           xml.shop { # описание магазина
@@ -84,7 +89,7 @@ module Export
       if ["book", "audiobook", "music", "video", "tour", "event_ticket"].include? wares_type_value
         send("offer_#{wares_type_value}".to_sym, xml, product, cat)
       else
-        send("offer_#{DEFAULT_OFFEN}".to_sym, xml, product, cat)      
+        send("offer_#{DEFAULT_OFFER}".to_sym, xml, product, cat)      
       end
     end
     
@@ -282,5 +287,4 @@ module Export
     end
     
   end
-  
 end
