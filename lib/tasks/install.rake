@@ -1,8 +1,8 @@
-namespace :yandex_market do
+namespace :spree_yandex_market do
   desc "Copies all migrations and assets (NOTE: This will be obsolete with Rails 3.1)"
   task :install do
-    Rake::Task['yandex_market:install:migrations'].invoke
-    Rake::Task['yandex_market:install:assets'].invoke
+    Rake::Task['spree_yandex_market:install:migrations'].invoke
+    Rake::Task['spree_yandex_market:install:assets'].invoke
   end
 
   namespace :install do
