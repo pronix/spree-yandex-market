@@ -13,7 +13,7 @@ module Export
     end
     
     def export
-      @config = YandexMarket::Config.instance
+      @config = Spree::YandexMarket::Config.instance
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       
@@ -55,11 +55,11 @@ module Export
             }
             xml.offers { # список товаров
               @categories && @categories.each do |cat|
-                products = Product.taxons_id_equals(cat).active.master_price_gt(0)
+                products = Product.in_taxon(cat).active.master_price_gte(0.001)
                 products = products.on_hand if @config.preferred_wares == "on_hand"
-                products = products.find_all_by_export_to_yandex_market(true)
-                products && products.each do |product|
-                  offer(xml,product, cat) 
+                products = products.where(:export_to_yandex_market => true)
+                products.each do |product|
+                  offer(xml, product, cat) 
                 end
               end          
             }

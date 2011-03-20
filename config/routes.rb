@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resource :yandex_markets do
+    resource :yandex_market_settings do
       member do
         match :general
         match :currency

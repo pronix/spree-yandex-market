@@ -1,8 +1,8 @@
-<%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
+<%= render :partial => 'admin/yandex_market_settings/shared/configuration_menu' %>
 
 <%= content_tag :h3, t('configure_yandex_market.ware_property'), :class => "name" %>
 
-<% form_tag(admin_yandex_markets_path, :method => :put) do -%>
+<% form_tag(admin_yandex_market_settings_path, :method => :put) do -%>
 <fieldset>
   <legend><span><%= t('configure_yandex_market.field_for') %></span></legend>
   <label><%= radio_button_tag 'wares_type', 'basic', true %> Основные</label>
@@ -73,7 +73,7 @@
 
 <p class="form-buttons">
   <%= button t('update') %> 
-  <%= t("or") %> <%= link_to t("cancel"), admin_yandex_markets_url %>
+  <%= t("or") %> <%= link_to t("cancel"), admin_yandex_market_settings_url %>
 </p>
 <% end -%>
 <script type="text/javascript" charset="utf-8">

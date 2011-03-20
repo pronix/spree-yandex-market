@@ -1,0 +1,23 @@
+<% content_for :sidebar do %>
+  <%= content_tag :h3, t('configure_yandex_market.title'), :class => "name" %>
+  <br class="clear" />
+
+    <ul class="sidebar">
+      <%= content_tag :li, :class => (params[:action] == "general" ? "active": "")  do -%>
+      <%= link_to t("configure_yandex_market.general"), general_admin_yandex_market_settings_path %>
+      <% end -%>
+      
+      <%= content_tag :li, :class => (params[:action] == "currency" ? "active": "")  do -%>
+      <%= link_to t("configure_yandex_market.list_currency") , currency_admin_yandex_market_settings_path %>
+      <% end -%>
+      
+      <%= content_tag :li, :class => (params[:action] == "export_files" ? "active": "")  do -%>
+      <%= link_to t("configure_yandex_market.export_files"),export_files_admin_yandex_market_settings_path %>
+      <% end -%>
+
+      
+      <%= content_tag :li, :class => (params[:action] == "ware_property" ? "active": "")  do -%>
+      <%= link_to t("configure_yandex_market.ware_property"),ware_property_admin_yandex_market_settings_path %>
+      <% end -%>
+    </ul>
+<% end -%>

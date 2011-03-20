@@ -43,7 +43,7 @@ namespace :spree do
         `ln -sf "#{tfile.path}" "#{File.join(directory, "#{torgovaya_sistema}.xml")}"`
 
         # Удаляем лишнии файлы
-        @config = YandexMarket::Config.instance
+        @config = Spree::YandexMarket::Config.instance
         @number_of_files = @config.preferred_number_of_files
          
         @export_files =  Dir[File.join(directory, '**','*')].

@@ -1,8 +1,8 @@
-<%= render :partial => 'admin/yandex_markets/shared/configuration_menu' %>
+<%= render :partial => 'admin/yandex_market_settings/shared/configuration_menu' %>
 <div class='toolbar'>
   <ul class='actions'>
     <li id="new_ot_link">
-      <%= link_to t('configure_yandex_market.run_generate_file'), run_export_admin_yandex_markets_path %>
+      <%= link_to t('configure_yandex_market.run_generate_file'), run_export_admin_yandex_market_settings_path %>
       
     </li>
   </ul>
@@ -19,7 +19,7 @@
    <% @export_files && @export_files.each do |ef| -%>
   <tr>
     <td><%= ef.first %></td>
-    <td><%= ef.last.to_s(:long) %></td>
+    <td><%= ef.last %></td>
     <td class="actions"><%= link_to t("configure_yandex_market.download"), url_for("/yandex_market/#{ef.first}") %> </td>
   </tr>
    <% end -%>
