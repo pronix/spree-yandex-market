@@ -5,10 +5,10 @@
 <% form_tag(admin_yandex_market_settings_path, :method => :put) do -%>
 <fieldset>
   <legend><span><%= t('configure_yandex_market.field_for') %></span></legend>
-  <label><%= radio_button_tag 'wares_type', 'basic', true %> Основные</label>
+  <label><%= radio_button_tag 'wares_type', 'simple', true %> Основные</label>
   <label><%= radio_button_tag 'wares_type', 'book' %> Книги </label>
   <label><%= radio_button_tag 'wares_type', 'music_video' %> Музыка/Видео </label>
-  <label><%= radio_button_tag 'wares_type', 'event_ticket' %> Билетов на мероприятия</label>      
+  <label><%= radio_button_tag 'wares_type', 'event_ticket' %> Билеты на мероприятия</label>
 </fieldset>
 
 <fieldset class="fields" id="basic">

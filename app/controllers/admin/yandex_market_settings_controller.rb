@@ -28,7 +28,7 @@ class Admin::YandexMarketSettingsController < Admin::BaseController
   end
   
   def run_export
-    command = %{cd #{Rails.root} && RAILS_ENV=#{Rails.env} rake spree:extensions:yandex_market:generate_ym &}
+    command = %{cd #{Rails.root} && RAILS_ENV=#{Rails.env} rake spree_yandex_market:generate_ym &}
     logger.info "[ yandex market ] Запуск формирование файла экспорта из блока администрирования "
     logger.info "[ yandex market ] команда - #{command} "
     system command

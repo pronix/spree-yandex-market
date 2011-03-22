@@ -6,7 +6,7 @@ module Export
     include ActionController::UrlWriter
     attr_accessor :host, :currencies
     
-    DEFAULT_OFFER = "book"
+    DEFAULT_OFFER = "simple"
 
     def helper
       @helper ||= ApplicationController.helpers
@@ -87,7 +87,7 @@ module Export
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
       wares_type_value = product_properties[@config.preferred_wares_type]
-      if ["book", "audiobook", "music", "video", "tour", "event_ticket"].include? wares_type_value
+      if ["book", "audiobook", "music", "video", "tour", "event_ticket", "vendor_model"].include? wares_type_value
         send("offer_#{wares_type_value}".to_sym, xml, product, cat)
       else
         send("offer_#{DEFAULT_OFFER}".to_sym, xml, product, cat)      
@@ -116,15 +116,15 @@ module Export
         # смотри http://spreecommerce.com/documentation/shipping.html#shipping-category
         xml.delivery               true
         xml.local_delivery_cost    @config.preferred_local_delivery_cost if @config.preferred_local_delivery_cost
-        xml.typePrefix product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
-        xml.name                product.name
-        xml.vendor product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]    
-        xml.vendorCode product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
+        xml.typePrefix             product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
+        xml.name                   product.name
+        xml.vendor                 product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]
+        xml.vendorCode             product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
         xml.model                  product_properties[@config.preferred_model] if product_properties[@config.preferred_model]
         xml.description            product.description if product.description
         xml.manufacturer_warranty  !product_properties[@config.preferred_manufacturer_warranty].blank? 
         xml.country_of_origin      product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
-        xml.downloadable false
+        xml.downloadable           false
       }
     end
 
