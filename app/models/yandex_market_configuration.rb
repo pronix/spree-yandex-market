@@ -41,7 +41,7 @@ class YandexMarketConfiguration < Configuration
   preference :media , :string           # Носитель
   preference :starring , :string        # Актеры
   preference :director , :string        # Режиссер
-  preference :orginal_name , :string     # Оригинальное наименовани
+  preference :original_name , :string     # Оригинальное наименовани
   preference :video_country, :string    # Страна
   
   # wares property Билеты

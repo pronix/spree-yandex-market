@@ -234,7 +234,7 @@ module Export
         xml.media             product_properties[@config.preferred_media]
         xml.starring          product_properties[@config.preferred_starring]
         xml.director          product_properties[@config.preferred_director]
-        xml.originalName      product_properties[@config.preferred_orginal_name]
+        xml.originalName      product_properties[@config.preferred_original_name]
         xml.country_of_origin product_properties[@config.preferred_video_country]
         xml.description product_url.description
       }
