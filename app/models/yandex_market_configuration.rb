@@ -1,5 +1,4 @@
 class YandexMarketConfiguration < Configuration
-  preference :category,        :string
   preference :currency,        :string
   preference :wares,           :string,  :default => "active"
   preference :number_of_files, :integer, :default => 5

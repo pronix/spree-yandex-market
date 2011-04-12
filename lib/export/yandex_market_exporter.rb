@@ -20,10 +20,6 @@ module Export
       @currencies = @config.preferred_currency.split(';').map{|x| x.split(':')}
       @currencies.first[1] = 1
       
-      @preferred_category = Taxon.find_by_name(@config.preferred_category)
-      @categories = @preferred_category.self_and_descendants
-      @categories_ids = @categories.collect { |x| x.id }
-      
       # Nokogiri::XML::Builder.new({ :encoding =>"utf-8"}, SCHEME) do |xml|
       Nokogiri::XML::Builder.new(:encoding =>"utf-8") do |xml|
         xml.doc.create_internal_subset('yml_catalog',
@@ -47,18 +43,20 @@ module Export
             }        
             
             xml.categories { # категории товара
-              @categories_ids && @categories.each do |cat|
-                @cat_opt = { :id => cat.id }
-                @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
-                xml.category(@cat_opt){ xml  << cat.name }
+              Taxonomy.all.each do |taxonomy|
+                taxonomy.root.self_and_descendants.each do |cat|
+                  @cat_opt = { :id => cat.id }
+                  @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
+                  xml.category(@cat_opt){ xml  << cat.name }
+                end
               end
             }
             xml.offers { # список товаров
-              products = Product.in_taxon(@preferred_category).active.master_price_gte(0.001)
+              products = Product.active.master_price_gte(0.001)
               products = products.on_hand if @config.preferred_wares == "on_hand"
               products = products.where(:export_to_yandex_market => true).group_by_products_id
               products.each do |product|
-                offer(xml, product, product.taxons.first) 
+                offer(xml, product, product.taxons.first) unless product.taxons.empty?
               end
             }
           }

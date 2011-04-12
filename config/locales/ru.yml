@@ -6,7 +6,6 @@ ru:
     title: Настройка Яндекс.Маркет
     general: Основные настройки
     currency: Валюта
-    export_category: Категория выгрузки
     list_currency: Список валют
     export_wares: Отбор товара
     export_files: Сформированные файлы
