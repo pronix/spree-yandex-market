@@ -136,7 +136,7 @@ module Export
         xml.name                product.name
         xml.vendorCode          product_properties[@config.preferred_vendor_code]
         xml.description         product.description
-        xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer]
+        xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false   
       }
     end
