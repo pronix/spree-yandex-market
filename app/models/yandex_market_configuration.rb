@@ -5,7 +5,8 @@ class YandexMarketConfiguration < Configuration
   preference :short_name,      :string
   preference :full_name,       :string
   preference :url,             :string
-  preference :local_delivery_cost, :float # стоимость доставки по своему региону
+  preference :local_delivery_cost, :string # стоимость доставки по своему региону, может быть произвольной текстовой фразой
+  preference :sales_notes,     :string
 
   
   # wares property 
