@@ -112,13 +112,13 @@ module Export
         # смотри http://spreecommerce.com/documentation/shipping.html#shipping-category
         xml.delivery               true
         xml.local_delivery_cost    @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
-        xml.sales_notes            @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.typePrefix             product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
         xml.name                   product.name
         xml.vendor                 product_properties[@config.preferred_vendor] if product_properties[@config.preferred_vendor]
         xml.vendorCode             product_properties[@config.preferred_vendor_code] if product_properties[@config.preferred_vendor_code]
         xml.model                  product_properties[@config.preferred_model] if product_properties[@config.preferred_model]
         xml.description            product.description if product.description
+        xml.sales_notes            @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.manufacturer_warranty  !product_properties[@config.preferred_manufacturer_warranty].blank? 
         xml.country_of_origin      product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable           false
@@ -134,10 +134,10 @@ module Export
         shared_xml(xml, product, cat)
         xml.delivery               true
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
-        xml.sales_notes         @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.name                product.name
         xml.vendorCode          product_properties[@config.preferred_vendor_code]
         xml.description         product.description
+        xml.sales_notes         @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.country_of_origin   product_properties[@config.preferred_country_of_manufacturer] if product_properties[@config.preferred_country_of_manufacturer]
         xml.downloadable false   
       }
@@ -153,7 +153,6 @@ module Export
         
         xml.delivery true
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
-        xml.sales_notes         @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         
         xml.author product_properties[@config.preferred_author]
         xml.name product.name
@@ -169,6 +168,7 @@ module Export
         xml.page_extent product_properties[@config.preferred_page_extent]
         
         xml.description product.description
+        xml.sales_notes @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.downloadable false
       }
     end
@@ -251,7 +251,6 @@ module Export
         
         xml.delivery true        
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
-        xml.sales_notes         @config.sales_notes unless @config.preferred_sales_notes.blank?
         xml.worldRegion ""
         xml.country ""
         xml.region ""
@@ -265,6 +264,7 @@ module Export
         xml.included ""
         xml.transport ""
         xml.description product.description
+        xml.sales_notes @config.sales_notes unless @config.preferred_sales_notes.blank?
       }
     end
     
@@ -277,7 +277,6 @@ module Export
         shared_xml(xml, product, cat)
         xml.delivery true                
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
-        xml.sales_notes @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
         xml.name product.name
         xml.place product_properties[@config.preferred_place]
         xml.hall(:plan => product_properties[@config.preferred_hall_url_plan]) { xml << product_properties[@config.preferred_hall] }
@@ -285,6 +284,7 @@ module Export
         xml.is_premiere !product_properties[@config.preferred_is_premiere].blank? 
         xml.is_kids !product_properties[@config.preferred_is_kids].blank? 
         xml.description product.description
+        xml.sales_notes @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
       }
     end
     
