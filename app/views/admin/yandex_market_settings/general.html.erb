@@ -48,6 +48,11 @@
   <legend><span><%= t('configure_yandex_market.sales_notes') %></span></legend>
   <%= text_field_tag "preferences[preferred_sales_notes]", @config.preferred_sales_notes %>
 </fieldset>  
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.only_backorder') %></span></legend>
+  <%= hidden_field_tag "preferences[preferred_only_backorder]", "false" %>
+  <%= check_box_tag "preferences[preferred_only_backorder]", "true", @config.preferred_only_backorder %>
+</fieldset>
 <p class="form-buttons">
   <%= button t('update') %> 
   <%= t("or") %> <%= link_to t("cancel"), admin_yandex_market_settings_url %>

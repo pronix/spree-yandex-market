@@ -29,6 +29,10 @@
     <td colspan=2><%= @config.preferred_sales_notes %></td>
   </tr>
   <tr>
+    <th scope="row"><%= t 'configure_yandex_market.only_backorder' %>:</th>
+    <td colspan=2><%= @config.preferred_only_backorder %></td>
+  </tr>
+  <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
     <td>
       <%= link_to(url_for("http://#{@config.preferred_url.sub(%r[^http://],'').sub(%r[/$],'')}/#{'/yandex_market/yandex_market.xml'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.xml")) if @config.preferred_url %>

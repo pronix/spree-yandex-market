@@ -7,6 +7,7 @@ class YandexMarketConfiguration < Configuration
   preference :url,             :string
   preference :local_delivery_cost, :string # стоимость доставки по своему региону, может быть произвольной текстовой фразой
   preference :sales_notes,     :string
+  preference :only_backorder,  :boolean, :default => false
 
   
   # wares property 

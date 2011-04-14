@@ -104,7 +104,7 @@ module Export
     def offer_vendor_model(xml,product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
-      opt = { :id => product.id, :type => "vendor.model", :available => product.has_stock? }
+      opt = { :id => product.id, :type => "vendor.model", :available => (@config.preferred_only_backorder ? false : product.has_stock?) }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         # xml.delivery               !product.shipping_category.blank?
@@ -129,7 +129,7 @@ module Export
     def offer_simple(xml, product, cat)
       product_properties = { }
       product.product_properties.map {|x| product_properties[x.property_name] = x.value }
-      opt = { :id => product.id,  :available => product.has_stock? }
+      opt = { :id => product.id,  :available => (@config.preferred_only_backorder ? false : product.has_stock?) }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         xml.delivery               true
