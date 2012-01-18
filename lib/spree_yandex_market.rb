@@ -1,5 +1,4 @@
 require 'spree_core'
-require 'spree_yandex_market_hooks'
 
 module SpreeYandexMarket
   class Engine < Rails::Engine
