@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-class Admin::YandexMarketSettingsController < Admin::BaseController  
+class Spree::Admin::YandexMarketSettingsController < Spree::Admin::BaseController  
   before_filter :get_config
   
   def show
@@ -50,6 +50,6 @@ class Admin::YandexMarketSettingsController < Admin::BaseController
   private
 
   def get_config
-    @config = Spree::YandexMarket::Config.instance
+    @config = Spree::YandexMarket::Config
   end
 end

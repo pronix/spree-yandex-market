@@ -3,7 +3,7 @@ require 'nokogiri'
 
 module Export
   class YandexMarketExporter
-    include ActionController::UrlWriter
+    include Rails.application.routes.url_helpers
     attr_accessor :host, :currencies
     
     DEFAULT_OFFER = "simple"
@@ -13,7 +13,7 @@ module Export
     end
     
     def export
-      @config = Spree::YandexMarket::Config.instance
+      @config = Spree::YandexMarket::Config
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       
