@@ -32,7 +32,7 @@ namespace :spree_yandex_market do
     puts 'saving file...'
 
     # Создаем файл, сохраняем в нужной папке,
-    tfile_basename = "#{torgovaya_sistema}_#{Time.now.strftime("%Y_%m_%d__%H_%M")}"
+    tfile_basename = "#{torgovaya_sistema}_#{Time.now.strftime("%Y_%m_%d__%H_%M")}.xml"
     tfile          = File.new(File.join(directory, tfile_basename), "w+")
     tfile.write(yml_xml)
     tfile.close
