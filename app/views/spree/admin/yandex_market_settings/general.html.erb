@@ -1,0 +1,60 @@
+<%= render :partial => 'spree/admin/yandex_market_settings/shared/configuration_menu' %>
+<%= content_tag :h3, t('configure_yandex_market.general'), :class => "name" %>
+<%= form_tag(admin_yandex_market_settings_path, :method => :put) do %>
+<fieldset>
+  <label for="preferences_short_name">
+    <%= t('configure_yandex_market.short_name') %>
+    <br class="clear" />   
+    <%= text_field_tag "preferences[short_name]", @config.preferred_short_name, :maxlength => 20 %>
+  </label>
+  <br class="clear" />
+  <label for="preferences_full_name">
+    <%= t('configure_yandex_market.full_name') %>
+    <br class="clear" />
+    <%= text_field_tag "preferences[full_name]", @config.preferred_full_name, :size => 50 %>
+  </label>
+  <br class="clear" />
+  <label for="preferences_url">
+    <%= t('configure_yandex_market.url') %>
+    <br class="clear" />
+    <%= text_field_tag "preferences[url]", @config.preferred_url, :size => 50 %>
+  </label>    
+</fieldset>
+
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.what_wares_export') %></span></legend>
+  <ol>
+    <li>
+      <label for="preferences_wares_active">
+        <%= radio_button_tag 'preferences[wares]', 'active', @config.preferred_wares == "active" %>
+        <%= t('configure_yandex_market.all_active_wares') %>
+      </label>
+    </li>
+    
+    <li>
+      <label for="preferences_wares_on_hand">
+        <%= radio_button_tag 'preferences[wares]', 'on_hand', @config.preferred_wares == "on_hand" %>
+        <%= t('configure_yandex_market.on_hand_wares') %>
+      </label>
+    </li>
+    
+  </ol>
+</fieldset>
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.local_delivery_cost') %></span></legend>
+  <%= text_field_tag "preferences[local_delivery_cost]", @config.preferred_local_delivery_cost %>
+</fieldset>  
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.sales_notes') %></span></legend>
+  <%= text_field_tag "preferences[sales_notes]", @config.preferred_sales_notes %>
+</fieldset>  
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.only_backorder') %></span></legend>
+  <%= hidden_field_tag "preferences[only_backorder]", 0 %>
+  <%= check_box_tag "preferences[only_backorder]", 1, @config.preferred_only_backorder %>
+</fieldset>
+<p class="form-buttons">
+  <%= button t('update') %> 
+  <%= t("or") %> <%= link_to t("cancel"), admin_yandex_market_settings_url %>
+</p>
+<% end %>

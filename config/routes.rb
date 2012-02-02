@@ -1,4 +1,5 @@
-Rails.application.routes.draw do
+Spree::Core::Engine.routes.prepend do
+
   namespace :admin do
     resource :yandex_market_settings do
       member do
@@ -10,4 +11,5 @@ Rails.application.routes.draw do
       end
     end
   end
+
 end

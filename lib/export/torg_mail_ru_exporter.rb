@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 module Export
   class TorgMailRuExporter
-    include ActionController::UrlWriter
+    include Rails.application.routes.url_helpers
     attr_accessor :host, :currencies
     
     SCHEME = Nokogiri::XML('<!DOCTYPE torg_price SYSTEM "shops.dtd" />')

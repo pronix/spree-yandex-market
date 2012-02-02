@@ -1,9 +1,17 @@
 require 'spree_core'
 
+module Spree::YandexMarket
+end
+
 module SpreeYandexMarket
   class Engine < Rails::Engine
+    railtie_name "spree_yandex_market"
 
     config.autoload_paths += %W(#{config.root}/lib)
+
+    initializer "spree.yandex_market.preferences", :after => "spree.environment" do |app|
+      Spree::YandexMarket::Config = Spree::YandexMarketConfiguration.new
+    end
 
     def self.activate
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|

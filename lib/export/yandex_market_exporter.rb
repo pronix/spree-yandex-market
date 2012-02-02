@@ -3,7 +3,7 @@ require 'nokogiri'
 
 module Export
   class YandexMarketExporter
-    include ActionController::UrlWriter
+    include Spree::Core::Engine.routes.url_helpers
     attr_accessor :host, :currencies
     
     DEFAULT_OFFER = "simple"
@@ -13,7 +13,7 @@ module Export
     end
     
     def export
-      @config = Spree::YandexMarket::Config.instance
+      @config = Spree::YandexMarket::Config
       @host = @config.preferred_url.sub(%r[^http://],'').sub(%r[/$], '')
       ActionController::Base.asset_host = @config.preferred_url
       
@@ -43,7 +43,7 @@ module Export
             }        
             
             xml.categories { # категории товара
-              Taxonomy.all.each do |taxonomy|
+              Spree::Taxonomy.all.each do |taxonomy|
                 taxonomy.root.self_and_descendants.each do |cat|
                   @cat_opt = { :id => cat.id }
                   @cat_opt.merge!({ :parentId => cat.parent_id}) unless cat.parent_id.blank?
@@ -52,7 +52,7 @@ module Export
               end
             }
             xml.offers { # список товаров
-              products = Product.active.master_price_gte(0.001)
+              products = Spree::Product.active.master_price_gte(0.001)
               products = products.on_hand if @config.preferred_wares == "on_hand"
               products = products.where(:export_to_yandex_market => true).group_by_products_id
               products.each do |product|
@@ -92,7 +92,7 @@ module Export
     
     # общая часть для всех видов продукции
     def shared_xml(xml, product, cat)
-      xml.url Spree::Config[:yandex_market_use_utm_labels] ? product_url(product, :host => @host, :utm_source => 'market.yandex.ru', :utm_medium => 'cpc', :utm_campaign => 'market') : product_url(product, :host => @host)
+      xml.url product_url(product, :host => @host)
       xml.price product.price
       xml.currencyId @currencies.first.first
       xml.categoryId cat.id

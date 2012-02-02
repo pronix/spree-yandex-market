@@ -1,4 +1,4 @@
-class YandexMarketConfiguration < Configuration
+class Spree::YandexMarketConfiguration < Spree::Preferences::Configuration
   preference :currency,        :string
   preference :wares,           :string,  :default => "active"
   preference :number_of_files, :integer, :default => 5
@@ -9,7 +9,6 @@ class YandexMarketConfiguration < Configuration
   preference :sales_notes,     :string
   preference :only_backorder,  :boolean, :default => false
 
-  
   # wares property 
   preference :type_prefix,     :string, :default => "prefix"   # Группа товаров \ категория
   preference :vendor,          :string, :default => "vendor"        # Производитель
@@ -34,7 +33,7 @@ class YandexMarketConfiguration < Configuration
   preference :storage, :string           # Носитель, на котором поставляется аудиокнига.
   preference :format, :string            # Формат аудиокниги.
   preference :recording_length , :string # Время звучания задается в формате mm.ss (минуты.секунды).
-  
+
   # wares property Музыка и Видео
   preference :artist , :string          # Исполнитель
   preference :title , :string           # Наименование 
@@ -44,7 +43,7 @@ class YandexMarketConfiguration < Configuration
   preference :director , :string        # Режиссер
   preference :original_name , :string     # Оригинальное наименовани
   preference :video_country, :string    # Страна
-  
+
   # wares property Билеты
   preference :place, :string         # Место мероприятия
   preference :hall, :string          # Зал
@@ -52,6 +51,5 @@ class YandexMarketConfiguration < Configuration
   preference :event_date, :string    # Дата и время сеанса. Указываются в формате ISO 8601: YYYY-MM-DDThh:mm
   preference :is_premiere, :string   # Признак премьерности мероприятия
   preference :is_kids, :string       # Признак детского мероприятия
-  
-end
 
+end
