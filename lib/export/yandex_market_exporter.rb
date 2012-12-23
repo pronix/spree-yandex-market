@@ -110,7 +110,7 @@ module Export
         # xml.delivery               !product.shipping_category.blank?
         # На самом деле наличие shipping_category не обязательно должно быть чтобы была возможна доставка
         # смотри http://spreecommerce.com/documentation/shipping.html#shipping-category
-        xml.delivery               true
+        xml.delivery               true if not @config.preferred_without_order_form
         xml.local_delivery_cost    @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         xml.typePrefix             product_properties[@config.preferred_type_prefix] if product_properties[@config.preferred_type_prefix]
         xml.name                   product.name
@@ -132,7 +132,7 @@ module Export
       opt = { :id => product.id,  :available => (@config.preferred_only_backorder ? false : product.has_stock?) }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery               true
+        xml.delivery            true if not @config.preferred_without_order_form
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         xml.name                product.name
         xml.vendor              product_properties[@config.preferred_vendor]
@@ -152,7 +152,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery true
+        xml.delivery true if not @config.preferred_without_order_form
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         
         xml.author product_properties[@config.preferred_author]
@@ -209,7 +209,7 @@ module Export
       opt = { :id => product.id, :type => "artist.title", :available => product.has_stock?  }
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery true        
+        xml.delivery true if not @config.preferred_without_order_form
 
         
         xml.artist product_properties[@config.preferred_artist]
@@ -230,7 +230,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery true        
+        xml.delivery true if not @config.preferred_without_order_form
         xml.title             product_properties[@config.preferred_title]
         xml.year              product_properties[@config.preferred_music_video_year]
         xml.media             product_properties[@config.preferred_media]
@@ -250,7 +250,7 @@ module Export
       xml.offer(opt) {
         shared_xml(xml, product, cat)
         
-        xml.delivery true        
+        xml.delivery true if not @config.preferred_without_order_form
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         xml.worldRegion ""
         xml.country ""
@@ -276,7 +276,7 @@ module Export
       opt = { :id => product.id, :type => "event-ticket", :available => product.has_stock?  }    
       xml.offer(opt) {
         shared_xml(xml, product, cat)
-        xml.delivery true                
+        xml.delivery true if not @config.preferred_without_order_form
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         xml.name product.name
         xml.place product_properties[@config.preferred_place]

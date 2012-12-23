@@ -33,13 +33,17 @@
     <td colspan=2><%= @config.preferred_only_backorder %></td>
   </tr>
   <tr>
+    <th scope="row"><%= t 'configure_yandex_market.without_order_form' %>:</th>
+    <td colspan=2><%= @config.preferred_without_order_form %></td>
+  </tr>
+
+  <tr>
     <th scope="row"><%= t 'configure_yandex_market.export_file' %>:</th> 
     <td>
       <%= link_to(url_for("http://#{@config.preferred_url.sub(%r[^http://],'').sub(%r[/$],'')}/#{'/yandex_market/yandex_market.xml'.sub(%r[^/],'')}"),  url_for("/yandex_market/yandex_market.xml")) if @config.preferred_url %>
     </td>
     <td>&nbsp;</td>
   </tr>
-  
   <tr>
     <th scope="row"><%= t 'configure_yandex_market.ware_property' %>:</th> 
     <td colspan=2>

@@ -53,6 +53,13 @@
   <%= hidden_field_tag "preferences[only_backorder]", 0 %>
   <%= check_box_tag "preferences[only_backorder]", 1, @config.preferred_only_backorder %>
 </fieldset>
+
+<fieldset>
+  <legend><span><%= t('configure_yandex_market.without_order_form') %></span></legend>
+  <%= hidden_field_tag "preferences[without_order_form]", 0 %>
+  <%= check_box_tag "preferences[without_order_form]", 1, @config.preferred_without_order_form %>
+</fieldset>
+
 <p class="form-buttons">
   <%= button t('update') %> 
   <%= t("or") %> <%= link_to t("cancel"), admin_yandex_market_settings_url %>

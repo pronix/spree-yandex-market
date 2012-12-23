@@ -6,6 +6,7 @@ ru:
     title: Настройка Яндекс.Маркет
     general: Основные настройки
     currency: Валюта
+    without_order_form: Без формы заказа
     list_currency: Список валют
     export_wares: Отбор товара
     export_files: Сформированные файлы
