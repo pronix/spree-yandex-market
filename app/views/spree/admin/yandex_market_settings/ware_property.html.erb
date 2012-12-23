@@ -2,7 +2,7 @@
 
 <%= content_tag :h3, t('configure_yandex_market.ware_property'), :class => "name" %>
 
-<% form_tag(admin_yandex_market_settings_path, :method => :put) do -%>
+<%= form_tag(admin_yandex_market_settings_path, :method => :put) do -%>
 <fieldset>
   <legend><span><%= t('configure_yandex_market.field_for') %></span></legend>
   <label><%= radio_button_tag 'wares_type', 'simple', true %> Основные</label>
@@ -11,7 +11,7 @@
   <label><%= radio_button_tag 'wares_type', 'event_ticket' %> Билеты на мероприятия</label>
 </fieldset>
 
-<fieldset class="fields" id="basic">
+<fieldset class="fields" id="simple">
   <legend><span><%= t('configure_yandex_market.basic_property') %></span></legend>
   <table class="index">
     <% ["wares_type", "type_prefix","vendor", "model", "vendor_code",
@@ -19,7 +19,7 @@
     <tr>
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
-        <%= select_tag("preferences[preferred_#{property}]",
+        <%= select_tag("preferences[#{property}]",
             options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
@@ -33,7 +33,7 @@
     <tr>
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
-        <%= select_tag("preferences[preferred_#{property}]",
+        <%= select_tag("preferences[#{property}]",
             options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
@@ -47,7 +47,7 @@
     <tr>
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
-        <%= select_tag("preferences[preferred_#{property}]",
+        <%= select_tag("preferences[#{property}]",
             options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>
@@ -62,7 +62,7 @@
     <tr>
       <td><%= t("configure_yandex_market.#{property}") %>:</td>
       <td>
-        <%= select_tag("preferences[preferred_#{property}]",
+        <%= select_tag("preferences[#{property}]",
             options_for_select(@properties.collect{ |u| ["#{u.presentation} (#{u.name})", u.name] }.unshift([nil, nil]), @config.send("preferred_#{property}".to_sym))) -%>
         </td>
       </tr>

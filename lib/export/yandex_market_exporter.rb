@@ -135,6 +135,7 @@ module Export
         xml.delivery               true
         xml.local_delivery_cost @config.preferred_local_delivery_cost unless @config.preferred_local_delivery_cost.blank?
         xml.name                product.name
+        xml.vendor              product_properties[@config.preferred_vendor]
         xml.vendorCode          product_properties[@config.preferred_vendor_code]
         xml.description         product.description
         xml.sales_notes         @config.preferred_sales_notes unless @config.preferred_sales_notes.blank?
