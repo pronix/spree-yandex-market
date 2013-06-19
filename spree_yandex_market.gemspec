@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
 
   s.add_dependency('spree_core', '>= 1.0.0.rc2')
-  s.add_dependency('nokogiri', '~> 1.5.0')
+  s.add_dependency('nokogiri', '>= 1.5.0')
 end
